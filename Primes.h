@@ -2,6 +2,7 @@
 #define PRIMES_H
 #include <stdint.h>
 #include <istream>
+#include <fstream>
 #include <set>
 #include "ordinaryFunctions.h"
 #include "myException.h"
@@ -57,6 +58,14 @@ class Primes {
         uint64_t el = *it;
         return el;
     };
+
+    void fileOutput(const char *filename){
+        std::ofstream f;
+        f.open(filename);
+        for(auto it = begin(); it != end(); ++it){
+            f << *it << "\n";
+        }
+    }
 
     friend std::ostream &operator<<(std::ostream &out, Primes &p) {
         for (auto it = p.begin(); it != p.end(); ++it) {
