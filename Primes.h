@@ -65,6 +65,7 @@ class Primes {
         for(auto it = begin(); it != end(); ++it){
             f << *it << "\n";
         }
+        f.close();
     }
 
     friend std::ostream &operator<<(std::ostream &out, Primes &p) {
