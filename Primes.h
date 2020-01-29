@@ -4,6 +4,7 @@
 #include <istream>
 #include <set>
 #include "ordinaryFunctions.h"
+#include "myException.h"
 
 class Primes {
    private:
@@ -11,41 +12,30 @@ class Primes {
     uint64_t max;
 
    public:
-    class iterator : std::set<uint64_t>::iterator {
-       public:
-        std::set<uint64_t>::iterator iter;
-        iterator &operator++() {
-            iter++;
-            return *this;
-        };
-    };
+    std::set<uint64_t>::iterator begin() {
+        return nums.begin();
+    }
 
-    /*Primes::iterator begin() {
-        iterator it;
-        auto beg = nums.begin();
-        it.iter = beg;
-        return it;
-    };
+    std::set<uint64_t>::iterator end() {
+        return nums.end();
+    }
 
-    Primes::iterator end() {
-        iterator it;
-        auto en = nums.end();
-        it.iter = en;
-        return it;
-    };*/
-
-    std::pair<Primes::iterator, bool> insert(uint64_t value) {
-        iterator it;
-        it.iter = nums.begin();
-        if (max == 0 || isPrime(value, 2) == 0) return std::make_pair(it, 0);
-        nums.insert(value);
-        it.iter = nums.find(value);
-        return std::make_pair(it, 1);
+    std::pair<std::set<uint64_t>::iterator, bool> insert(uint64_t value) {
+        if (max == 0 && isPrime(value, 2) == 1) {
+            nums.insert(value);
+            return std::make_pair(nums.find(value), 1);
+        }
+        else if(max > 0 && value <= max && isPrime(value, 2) == 1){
+            nums.insert(value);
+            return std::make_pair(nums.find(value), 1);
+        }
+        return std::make_pair(end(), 0);
     }
 
     Primes(uint64_t max_t) {
         max = max_t;
-        for (size_t i = 1; i < max_t; ++i) {
+        if(max == 0) throw myException();
+        for (size_t i = 1; i <= max_t; ++i) {
             insert(i);
         }
     };
@@ -59,6 +49,7 @@ class Primes {
     };
 
     uint64_t operator[](uint64_t index) {
+        if(index < 0) throw myException();
         auto it = nums.begin();
         for (size_t i = 0; i < index; ++i) {
             it++;
@@ -67,8 +58,8 @@ class Primes {
         return el;
     };
 
-    friend std::ostream &operator<<(std::ostream &out, const Primes &p) {
-        for (auto it = p.nums.begin(); it != p.nums.end(); ++it) {
+    friend std::ostream &operator<<(std::ostream &out, Primes &p) {
+        for (auto it = p.begin(); it != p.end(); ++it) {
             std::cout << *it << " ";
         }
         return out;
