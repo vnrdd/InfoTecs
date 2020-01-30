@@ -59,11 +59,27 @@ class Primes {
         return el;
     };
 
-    void fileOutput(const char *filename){
+    void fileOutput(const char *filename, const int &flag){
         std::ofstream f;
         f.open(filename);
-        for(auto it = begin(); it != end(); ++it){
-            f << *it << "\n";
+        if(flag == 0){
+            for(auto it = begin(); it != end(); ++it){
+                f << *it << "\n";
+            }
+        }
+        if(flag == 1){
+            int i = 0;
+            for(auto it = begin(); it != end(); ++it){
+                if(isPrime(i, 2)) f << *it << "\n";
+                i++;
+            }
+        }
+        if(flag == 2){
+            for(auto it = begin(); it != end(); ++it){
+                if(isPrime(2*(*it)+1, 2)){
+                    f << *it << "\n";
+                }
+            }
         }
         f.close();
     }
