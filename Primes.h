@@ -84,6 +84,23 @@ class Primes {
         f.close();
     }
 
+    void find(uint64_t count_or_max, const Primes &p2, bool &flag){
+        if(size == 0) throw myException();
+        if(flag == 0){
+            for(auto it = begin(); it != end(); ++it){
+                if(*it <= count_or_max) p2.insert(*it);
+            }
+            return;
+        }
+        auto it = begin()
+        if(flag == 1){
+            for(int i = 0; i < count_or_max; ++i){
+                p2.insert(*it); ++it;
+            }
+            return;
+        }
+    }
+
     friend std::ostream &operator<<(std::ostream &out, Primes &p) {
         for (auto it = p.begin(); it != p.end(); ++it) {
             std::cout << *it << " ";
