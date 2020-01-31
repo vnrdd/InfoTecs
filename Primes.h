@@ -68,15 +68,25 @@ class Primes {
             }
         }
         if(flag == 1){
+            auto isSuper = [](uint64_t value, uint64_t index){
+                if(isPrime(value, 2) && isPrime(index, 2)) return 1;
+                return 0;
+            };
+
             int i = 0;
             for(auto it = begin(); it != end(); ++it){
-                if(isPrime(i, 2)) f << *it << "\n";
+                if(isSuper(*it, i+1)) f << *it << "\n";
                 i++;
             }
         }
         if(flag == 2){
+            auto isSophie = [](uint64_t value){
+                if(isPrime(value, 2) && isPrime(2*value+1, 2)) return 1;
+                return 0;
+            };
+
             for(auto it = begin(); it != end(); ++it){
-                if(isPrime(2*(*it)+1, 2)){
+                if(isSophie(*it)){
                     f << *it << "\n";
                 }
             }
@@ -84,15 +94,15 @@ class Primes {
         f.close();
     }
 
-    void find(uint64_t count_or_max, const Primes &p2, bool &flag){
-        if(size == 0) throw myException();
+    void find(uint64_t count_or_max, Primes &p2, bool &flag){
+        if(size() == 0) throw myException();
         if(flag == 0){
             for(auto it = begin(); it != end(); ++it){
                 if(*it <= count_or_max) p2.insert(*it);
             }
             return;
         }
-        auto it = begin()
+        auto it = begin();
         if(flag == 1){
             for(int i = 0; i < count_or_max; ++i){
                 p2.insert(*it); ++it;
