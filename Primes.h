@@ -145,6 +145,7 @@ class Primes {
         nums = copy.nums;
     }
 
+    /*! Method for finding and memorizing the sequence 1-100*/
     void find() {
         clear();
         for (int i = 0; i < 100; ++i) {
