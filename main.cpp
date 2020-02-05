@@ -1,18 +1,6 @@
 #include "Primes.h"
 
 void menu(int argc, char** argv) {
-    if (argc != 2) {
-        std::cout << "\n*** PLEASE INPUT 1 FILE VIA COMMAND LINE ***\n";
-        std::cout << "/ we need file to output data if you want during the programm /\n\n";
-        return;
-    }
-
-    else if (!checkFile(argv[1])) {
-        std::cout << "\n*** PLEASE INPUT CORRECT FILE NAME ***\n";
-        std::cout << "/ we need file to output data if you want during the programm /\n\n";
-        return;
-    }
-
     std::cout << "\n /// HI! Lets create our Primes Container! ///";
     int answerFlag = 0;
     while (answerFlag != 1 && answerFlag != 2) {
@@ -108,27 +96,44 @@ void menu(int argc, char** argv) {
                 break;
             }
 
-            case 4:
+            case 4: {
                 std::cout << "\n...Complete\nCURRENT CONTAINER: ";
                 std::cout << p;
                 std::cout << std::endl;
+                std::string f;
+                while (f != "none" && !checkFile(f)) {
+                    std::cout << "Input the filename (none - if you dont want): ";
+                    std::cin >> f;
+                }
+                if (checkFile(f)) p.fileOutput(f, 0);
                 answerFlag = 7;
                 break;
+            }
 
             case 5: {
-                p.fileOutput(argv[1], 1);
                 std::cout << "\n...Complete\nSUPER PRIMES: ";
                 p.displayOutput(1);
                 std::cout << std::endl;
+                std::string f;
+                while (f != "none" && !checkFile(f)) {
+                    std::cout << "Input the filename (none - if you dont want): ";
+                    std::cin >> f;
+                }
+                if (checkFile(f)) p.fileOutput(f, 1);
                 answerFlag = 7;
                 break;
             }
 
             case 6: {
-                p.fileOutput(argv[1], 2);
                 std::cout << "\n...Complete\nSOPHIE PRIMES: ";
                 p.displayOutput(2);
                 std::cout << std::endl;
+                std::string f;
+                while (f != "none" && !checkFile(f)) {
+                    std::cout << "Input the filename (none - if you dont want): ";
+                    std::cin >> f;
+                }
+                if (checkFile(f)) p.fileOutput(f, 2);
                 answerFlag = 7;
                 break;
             }
