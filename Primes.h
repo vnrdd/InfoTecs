@@ -5,7 +5,10 @@
 #include <fstream>
 #include <set>
 #include "ordinaryFunctions.h"
-#include "myException.h"
+
+/*!
+    \brief It is the class-container for working with prime numbers.
+*/
 
 class Primes {
    private:
@@ -13,14 +16,16 @@ class Primes {
     uint64_t max;
 
    public:
+    /*! Begin iterator */
     std::set<uint64_t>::iterator begin() {
         return nums.begin();
     }
-
+    /*! End iterator */
     std::set<uint64_t>::iterator end() {
         return nums.end();
     }
 
+    /*! Method for pushing values into the container */
     std::pair<std::set<uint64_t>::iterator, bool> insert(uint64_t value) {
         if (max == 0 && isPrime(value, 2) == 1) {
             nums.insert(value);
@@ -33,24 +38,32 @@ class Primes {
         return std::make_pair(end(), 0);
     }
 
+    /*! Method for popping values from the container */
+    size_t erase(const uint64_t &value){
+        return nums.erase(value);
+    }
+
+    /*! Upborder container constructor */
     Primes(uint64_t max_t) {
         max = max_t;
-        if(max == 0) throw myException();
         for (size_t i = 1; i <= max_t; ++i) {
             insert(i);
         }
     };
 
+    /*! Empty container constructor */
     Primes() {
         max = 0;
     };
 
+    /*! Returning value is the container size */
     uint64_t size() {
         return nums.size();
     };
 
+    /*! [] Operator for taking values */
     uint64_t operator[](uint64_t index) {
-        if(index < 0) throw myException();
+        if(index < 0 || index > size() - 1) throw myException();
         auto it = nums.begin();
         for (size_t i = 0; i < index; ++i) {
             it++;
@@ -59,7 +72,8 @@ class Primes {
         return el;
     };
 
-    void fileOutput(const char *filename, const int &flag){
+    /*! Method for outputting our container into the file (flags exist: 1-full; 2-superprimes; 3-sophie primes) */
+    void fileOutput(const char *filename, int flag){
         std::ofstream f;
         f.open(filename);
         if(flag == 0){
@@ -94,8 +108,42 @@ class Primes {
         f.close();
     }
 
-    void find(uint64_t count_or_max, Primes &p2, bool &flag){
+    /*! Method for outputting our container on the display (flags exist: 1-full; 2-superprimes; 3-sophie primes) */
+    void displayOutput(int flag){
+        if(flag == 1){
+            auto isSuper = [](uint64_t value, uint64_t index){
+                if(isPrime(value, 2) && isPrime(index, 2)) return 1;
+                return 0;
+            };
+
+            int i = 0;
+            for(auto it = begin(); it != end(); ++it){
+                if(isSuper(*it, i+1)) std::cout << *it << " ";
+                i++;
+            }
+        }
+        if(flag == 2){
+            auto isSophie = [](uint64_t value){
+                if(isPrime(value, 2) && isPrime(2*value+1, 2)) return 1;
+                return 0;
+            };
+
+            for(auto it = begin(); it != end(); ++it){
+                if(isSophie(*it)) std::cout << *it << " ";
+            }
+        }
+    }
+
+    /*! Copy constructor */
+    Primes(const Primes& copy){
+        max = copy.max;
+        nums = copy.nums;
+    } 
+
+    /*! Method for finding and memorizing the sequence */
+    void find(uint64_t count_or_max, std::set<uint64_t> &p2, bool flag){
         if(size() == 0) throw myException();
+        if(count_or_max == 0) return;
         if(flag == 0){
             for(auto it = begin(); it != end(); ++it){
                 if(*it <= count_or_max) p2.insert(*it);
@@ -111,6 +159,7 @@ class Primes {
         }
     }
 
+    /*! Default output operator */
     friend std::ostream &operator<<(std::ostream &out, Primes &p) {
         for (auto it = p.begin(); it != p.end(); ++it) {
             std::cout << *it << " ";
@@ -118,6 +167,7 @@ class Primes {
         return out;
     };
 
+    /*! Destructor */
     ~Primes(){};
 };
 
