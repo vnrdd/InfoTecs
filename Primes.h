@@ -56,8 +56,8 @@ class Primes {
         max = 0;
     };
 
-    bool operator==(std::set<uint32_t> &s) {
-        if (nums == s) return 1;
+    bool operator==(Primes &s) {
+        if (nums == s.nums) return 1;
         return 0;
     }
 
@@ -78,7 +78,7 @@ class Primes {
     };
 
     /*! Method for outputting our container into the file (flags exist: 1-full; 2-superprimes; 3-sophie primes) */
-    void fileOutput(const char *filename, int flag) {
+    void fileOutput(std::string filename, int flag) {
         std::ofstream f;
         f.open(filename);
         if (flag == 0) {
